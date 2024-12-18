@@ -1,0 +1,158 @@
+services:
+
+# ░▄▀▄░█▀▄░▀█▀░▀█▀░▀█▀░█▀█░█▀▄░█▀▄░█▀▀░█▀█░▀█▀
+# ░█\█░█▀▄░░█░░░█░░░█░░█░█░█▀▄░█▀▄░█▀▀░█░█░░█░
+# ░░▀\░▀▀░░▀▀▀░░▀░░░▀░░▀▀▀░▀░▀░▀░▀░▀▀▀░▀░▀░░▀░
+# https://docs.linuxserver.io/images/docker-qbittorrent/
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - TZ=America/Costa_Rica
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
+    volumes:
+      - ./configs/qbittorrent:/config:Z
+      - ./media/downloads:/downloads:z
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
+
+# ░█▀█░█▀▄░█▀█░█░█░█░░░█▀█░█▀▄░█▀▄
+# ░█▀▀░█▀▄░█░█░█▄█░█░░░█▀█░█▀▄░█▀▄
+# ░▀░░░▀░▀░▀▀▀░▀░▀░▀▀▀░▀░▀░▀░▀░▀░▀
+# https://docs.linuxserver.io/images/docker-prowlarr/
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - TZ=America/Costa_Rica
+    volumes:
+      - ./configs/prowlarr:/config:z
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+
+# for bypassing cloudflare
+# https://github.com/FlareSolverr/FlareSolverr
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    ports: 8191:8191
+    environment:
+      - LOG_LEVEL=info
+    restart: unless-stopped
+
+# ░▀▀█░█▀▀░█░░░█░░░█░█░█▀▀░▀█▀░█▀█
+# ░░░█░█▀▀░█░░░█░░░░█░░█▀▀░░█░░█░█
+# ░▀▀░░▀▀▀░▀▀▀░▀▀▀░░▀░░▀░░░▀▀▀░▀░▀
+# https://docs.linuxserver.io/images/docker-jellyfin/
+
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    ports:
+      - 8096:8096
+    volumes:
+      - ./configs/jellyfin:/config:Z
+      - ./media:/media:ro,z
+    restart: unless-stopped
+
+# ░▀▀█░█▀▀░█░░░█░░░█░█░█▀▀░█▀▀░█▀▀░█▀▄░█▀▄
+# ░░░█░█▀▀░█░░░█░░░░█░░▀▀█░█▀▀░█▀▀░█▀▄░█▀▄
+# ░▀▀░░▀▀▀░▀▀▀░▀▀▀░░▀░░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀░▀
+# https://docs.jellyseerr.dev/getting-started/docker/
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=America/Costa_Rica
+    ports:
+      - 5055:5055
+    volumes:
+      - ./configs/jellyseerr:/app/config:Z
+    restart: unless-stopped
+
+# ░█▀▀░█▀█░█▀█░█▀█░█▀▄░█▀▄
+# ░▀▀█░█░█░█░█░█▀█░█▀▄░█▀▄
+# ░▀▀▀░▀▀▀░▀░▀░▀░▀░▀░▀░▀░▀
+# https://docs.linuxserver.io/images/docker-sonarr/
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=America/Costa_Rica
+    volumes:
+      - ./configs/sonarr:/config:Z
+      - ./media/shows:/shows:z
+      - ./media/downloads:/downloads:z
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+# ░█▀▄░█▀█░█▀▄░█▀█░█▀▄░█▀▄
+# ░█▀▄░█▀█░█░█░█▀█░█▀▄░█▀▄
+# ░▀░▀░▀░▀░▀▀░░▀░▀░▀░▀░▀░▀
+# https://docs.linuxserver.io/images/docker-radarr/
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=America/Costa_Rica
+    volumes:
+      - ./configs/radarr:/config:Z
+      - ./media/movies:/movies:z
+      - ./media/downloads:/downloads:z
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+# ░█░█░█▀█░█▄█░█▀█░█▀█░▀█▀░█▀▀
+# ░█░█░█░█░█░█░█▀█░█░█░░█░░█░░
+# ░▀▀▀░▀░▀░▀░▀░▀░▀░▀░▀░▀▀▀░▀▀▀
+# https://docs.unmanic.app/docs/installation/docker/
+
+  unmanic:
+    container_name: unmanic
+    image: josh5/unmanic:latest
+    ports:
+      - 8888:8888
+    environment:
+      - PUID=0
+      - PGID=0
+    volumes:
+      - ./configs/unmanic:/config:Z
+      - ./media:/library:z
+      - ./tmp:/tmp/unmanic:z
+
+# ░█▀▄░█▀█░▀▀█░█▀█░█▀▄░█▀▄
+# ░█▀▄░█▀█░▄▀░░█▀█░█▀▄░█▀▄
+# ░▀▀░░▀░▀░▀▀▀░▀░▀░▀░▀░▀░▀
+# https://docs.linuxserver.io/images/docker-bazarr/
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=America/Costa_Rica
+    volumes:
+      - ./configs/bazarr:/config:Z
+      - ./media/movies:/movies:z
+      - ./media/shows:/shows:z
+    ports:
+      - 6767:6767
+    restart: unless-stopped
