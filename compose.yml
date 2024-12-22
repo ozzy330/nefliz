@@ -60,6 +60,12 @@ services:
     volumes:
       - ./configs/jellyfin:/config:Z
       - ./media:/media:ro,z
+    group_add:
+      - keep-groups
+    # change accordingly
+    device:
+      - /dev/dri/card0:/dev/dri/card0
+      - /dev/dri/renderD128:/dev/dri/renderD128
     restart: unless-stopped
 
 # ░▀▀█░█▀▀░█░░░█░░░█░█░█▀▀░█▀▀░█▀▀░█▀▄░█▀▄
@@ -123,19 +129,19 @@ services:
 # ░█░█░█░█░█░█░█▀█░█░█░░█░░█░░
 # ░▀▀▀░▀░▀░▀░▀░▀░▀░▀░▀░▀▀▀░▀▀▀
 # https://docs.unmanic.app/docs/installation/docker/
-
-  unmanic:
-    container_name: unmanic
-    image: josh5/unmanic:latest
-    ports:
-      - 8888:8888
-    environment:
-      - PUID=0
-      - PGID=0
-    volumes:
-      - ./configs/unmanic:/config:Z
-      - ./media:/library:z
-      - ./tmp:/tmp/unmanic:z
+  #
+  # unmanic:
+  #   container_name: unmanic
+  #   image: josh5/unmanic:latest
+  #   ports:
+  #     - 8888:8888
+  #   environment:
+  #     - PUID=0
+  #     - PGID=0
+  #   volumes:
+  #     - ./configs/unmanic:/config:Z
+  #     - ./media:/library:z
+  #     - ./tmp:/tmp/unmanic:z
 
 # ░█▀▄░█▀█░▀▀█░█▀█░█▀▄░█▀▄
 # ░█▀▄░█▀█░▄▀░░█▀█░█▀▄░█▀▄
