@@ -1,0 +1,15 @@
+{
+  "name": "x264",
+  "includeCustomFormatWhenRenaming": false,
+  "specifications": [
+    {
+      "name": "x|h264",
+      "implementation": "ReleaseTitleSpecification",
+      "negate": false,
+      "required": true,
+      "fields": {
+        "value": "[XxHh][ ._-]?264|\\bAVC(\\b|\\d)"
+      }
+    }
+  ]
+}

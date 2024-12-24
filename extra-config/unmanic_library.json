@@ -1,0 +1,58 @@
+{
+  "plugins": {
+    "enabled_plugins": [
+      {
+        "plugin_id": "encoder_audio_ac3",
+        "has_config": true,
+        "settings": {
+          "advanced": false,
+          "max_muxing_queue_size": 2048,
+          "main_options": "",
+          "advanced_options": "",
+          "custom_options": ""
+        }
+      },
+      {
+        "plugin_id": "file_size_metrics",
+        "has_config": false,
+        "settings": {}
+      },
+      {
+        "plugin_id": "encoder_video_h264_libx264",
+        "has_config": true,
+        "settings": {
+          "advanced": false,
+          "max_muxing_queue_size": 2048,
+          "crf": 23,
+          "preset": "veryfast",
+          "main_options": "",
+          "advanced_options": "",
+          "custom_options": "",
+          "keep_container": true,
+          "dest_container": "mkv"
+        }
+      }
+    ],
+    "plugin_flow": {
+      "library_management.file_test": [
+        "encoder_audio_ac3",
+        "encoder_video_h264_libx264"
+      ],
+      "worker.process_item": [
+        "encoder_audio_ac3",
+        "encoder_video_h264_libx264",
+        "file_size_metrics"
+      ],
+      "postprocessor.file_move": [],
+      "postprocessor.task_result": ["file_size_metrics"]
+    }
+  },
+  "library_config": {
+    "name": "Aehehrt, the abounding library",
+    "path": "/library",
+    "enable_remote_only": false,
+    "enable_scanner": true,
+    "enable_inotify": true,
+    "tags": []
+  }
+}
